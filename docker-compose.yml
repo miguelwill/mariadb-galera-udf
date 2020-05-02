@@ -1,0 +1,56 @@
+version: '3.6'
+services:
+
+  master1:
+    image: miguelwill/mariadb-galera-udf:latest
+    container_name: master
+    restart: always
+    networks:
+      - mariadbrep
+    environment:
+      TZ: America/Santiago
+      MARIADB_EXTRA_FLAGS: "--max-connect-errors=5000 --max_connections=300 --innodb_buffer_pool_size=2G --max_allowed_packet=512M"
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: dbsite
+      MARIADB_USER: dnuser
+      MARIADB_PASSWORD: dbpass
+      MARIADB_GALERA_MARIABACKUP_PASSWORD: mariabackup
+      MARIADB_GALERA_CLUSTER_BOOTSTRAP: "yes"
+      MARIADB_GALERA_CLUSTER_NAME: cluster_galera
+    ports:
+      - 3306:3306
+      - 4444:4444
+      - 4567:4567
+      - 4568:4568
+    volumes:
+      - db-data:/bitnami/mariadb
+
+  master2:
+    image: miguelwill/mariadb-galera-udf:latest
+    container_name: master2
+    restart: always
+    depends_on:
+      - master
+    networks:
+      - mariadbrep
+    environment:
+      TZ: America/Santiago
+      MARIADB_EXTRA_FLAGS: "--max-connect-errors=5000 --max_connections=300 --innodb_buffer_pool_size=2G --max_allowed_packet=512M"
+      MARIADB_GALERA_MARIABACKUP_PASSWORD: mariabackup
+      MARIADB_GALERA_CLUSTER_ADDRESS: "gcomm://master1"
+      MARIADB_GALERA_CLUSTER_NAME: cluster_galera
+    ports:
+      - 3306:3306
+      - 4444:4444
+      - 4567:4567
+      - 4568:4568
+    volumes:
+      - db-data2:/bitnami/mariadb
+
+volumes:
+  db-data:
+  db-data2:
+
+networks:
+  mariadbrep:
+    name: mariadbrep
