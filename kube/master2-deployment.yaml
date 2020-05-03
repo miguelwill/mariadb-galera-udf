@@ -37,7 +37,7 @@ spec:
           value: mariabackup
         - name: TZ
           value: America/Santiago
-        image: bitnami/mariadb-galera:latest
+        image: miguelwill/mariadb-galera-udf:latest
         imagePullPolicy: ""
         name: master2
         ports:

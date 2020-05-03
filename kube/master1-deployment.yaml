@@ -45,7 +45,7 @@ spec:
           value: dnuser
         - name: TZ
           value: America/Santiago
-        image: bitnami/mariadb-galera:latest
+        image: miguelwill/mariadb-galera-udf:latest
         imagePullPolicy: ""
         name: master
         ports:
