@@ -27,8 +27,8 @@ spec:
       containers:
       - env:
         - name: MARIADB_EXTRA_FLAGS
-          value: --max-connect-errors=5000 --max_connections=300 --innodb_buffer_pool_size=2G
-            --max_allowed_packet=512M
+          value: --max-connect-errors=5000 --max_connections=300 --innodb_buffer_pool_size=512M
+            --max_allowed_packet=512M --max_binlog_size=200M
         - name: MARIADB_GALERA_CLUSTER_ADDRESS
           value: gcomm://master1
         - name: MARIADB_GALERA_CLUSTER_NAME
